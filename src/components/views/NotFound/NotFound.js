@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
-import styles from './MainLayout.module.scss'
+import styles from './NotFound.module.scss'
 
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
@@ -9,7 +9,7 @@ import styles from './MainLayout.module.scss'
 function Component({ className, children }) {
   return (
     <div className={clsx(className, styles.root)}>
-      <h2>MainLayout</h2>
+      <h2>NotFound</h2>
       {children}
     </div>
   )
@@ -36,7 +36,7 @@ Component.defaultProps = {
 // const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as MainLayout,
-  // Container as MainLayout,
-  Component as MainLayoutComponent,
+  Component as NotFound,
+  // Container as NotFound,
+  Component as NotFoundComponent,
 }

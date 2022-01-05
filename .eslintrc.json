@@ -5,9 +5,8 @@
      "node": true,
      "jest": true
   },
-  "parser": "react-scripts/node_modules/babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 11,
     "sourceType": "module",
     "ecmaFeatures": {
         "jsx": true
@@ -19,13 +18,13 @@
     }
   },
   "plugins": [
+    "jsx-a11y",
     "react",
     "prettier"
   ],
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "react-app",
+    "plugin:prettier/recommended",
+    "airbnb",
     "prettier"
   ],
   "rules": {
@@ -34,23 +33,22 @@
       2,
       {"SwitchCase": 1}
     ],
+    "import/order": "off",
+    "import/prefer-default-export": "off",
     "linebreak-style": [
       "off"
     ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "quotes": [
       "error",
       "single",
       {"allowTemplateLiterals": true}
     ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "comma-dangle": [
-      "error",
-      "always-multiline"
-    ],
+    "semi": 0,
     "no-console": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": [
+      "warn", {"semi": false}
+    ]
   }
 }
