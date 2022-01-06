@@ -1,23 +1,13 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
+import initialState from './initialState'
+import postsReducer from './postsRedux'
 import thunk from 'redux-thunk'
-import tablesReducer from './tablesRedux'
-
-// define initial state and shallow-merge initial data
-const initialState = {
-  tables: {
-    data: {},
-    loading: {
-      active: false,
-      error: false,
-    },
-  },
-}
 
 // define reducers
 const reducers = {
-  tables: tablesReducer,
+  posts: postsReducer,
 }
 
 // add blank reducers for initial state properties without reducers

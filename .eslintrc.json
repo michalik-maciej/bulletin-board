@@ -45,6 +45,7 @@
       "single",
       {"allowTemplateLiterals": true}
     ],
+    "no-unused-vars": "warn",
     "semi": 0,
     "no-console": "off",
     "prettier/prettier": [
