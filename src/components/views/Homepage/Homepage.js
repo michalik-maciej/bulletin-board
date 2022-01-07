@@ -1,42 +1,44 @@
+import { Paper } from '@mui/material'
+import { Post } from '../Post/Post'
 import PropTypes from 'prop-types'
 import React from 'react'
 import clsx from 'clsx'
+import { connect } from 'react-redux'
+import { getAll } from '../../../redux/postsRedux'
 import styles from './Homepage.module.scss'
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
-function Component({ className, children }) {
+function Component({ className, children, posts }) {
   return (
-    <div className={clsx(className, styles.root)}>
+    <Paper className={styles.root} elevation={2}>
       <h2>Homepage</h2>
+      {posts.map((post) => (
+        <Post key={post.id} data={post} />
+      ))}
       {children}
-    </div>
+    </Paper>
   )
 }
 
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  posts: PropTypes.arrayOf(PropTypes.object),
 }
 
 Component.defaultProps = {
   children: null,
   className: '',
+  posts: [{}],
 }
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = (state) => ({
+  posts: getAll(state),
+})
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps)(Component)
 
-export {
-  Component as Homepage,
-  // Container as Homepage,
-  Component as HomepageComponent,
-}
+export { Container as Homepage, Component as HomepageComponent }

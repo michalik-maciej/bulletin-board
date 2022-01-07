@@ -29,11 +29,11 @@ function App() {
             <CssBaseline />
             <MainLayout>
               <Routes>
-                <Route exact path="/" component={Homepage} />
-                <Route exact path="/post/add" component={PostAdd} />
-                <Route exact path="/post/:id" component={Post} />
-                <Route exact path="/post/:id/edit" component={PostEdit} />
-                <Route path="*" component={NotFound} />
+                <Route exact path="/" element={<Homepage />} />
+                <Route exact path="/post/add" element={<PostAdd />} />
+                <Route exact path="/post/:id" element={<Post />} />
+                <Route exact path="/post/:id/edit" element={<PostEdit />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </MainLayout>
           </ThemeProvider>

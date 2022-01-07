@@ -33,10 +33,10 @@ Component.defaultProps = {
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as Template,
-  // Container as Template,
+  // ComponentContainer as Template,
   Component as TemplateComponent,
 }

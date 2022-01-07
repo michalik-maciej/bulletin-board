@@ -1,4 +1,9 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+ .root {
+   background: #eee;
+   min-height: calc(100vh - 2em);
+   margin: 2rem auto 0;
+   padding: 4rem;
+   display: flex;
+ }

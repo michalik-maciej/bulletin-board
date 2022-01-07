@@ -10,14 +10,12 @@ import styles from './Footer.module.scss'
 
 function Component({ className, children }) {
   return (
-    <Box alignItems="flex-end">
-      <AppBar>
-        <Container maxWidth="lg">
-          <h2>Footer</h2>
-          {children}
-        </Container>
-      </AppBar>
-    </Box>
+    <AppBar sx={{ top: 'auto', bottom: 0 }}>
+      <Container maxWidth="lg">
+        <h2>Footer</h2>
+        {children}
+      </Container>
+    </AppBar>
   )
 }
 
@@ -38,10 +36,10 @@ Component.defaultProps = {
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as Footer,
-  // Container as Footer,
+  // ComponentContainer as Footer,
   Component as FooterComponent,
 }

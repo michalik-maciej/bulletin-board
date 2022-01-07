@@ -33,10 +33,10 @@ Component.defaultProps = {
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as NotFound,
-  // Container as NotFound,
+  // ComponentContainer as NotFound,
   Component as NotFoundComponent,
 }

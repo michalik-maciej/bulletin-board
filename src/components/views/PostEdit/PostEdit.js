@@ -33,10 +33,10 @@ Component.defaultProps = {
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as PostEdit,
-  // Container as PostEdit,
+  // ComponentContainer as PostEdit,
   Component as PostEditComponent,
 }

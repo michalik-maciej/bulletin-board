@@ -11,14 +11,9 @@ import styles from './MainLayout.module.scss'
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 function Component({ className, children }) {
-  const role = {
-    user: false,
-    admin: false,
-  }
-
   return (
-    <Container style={{ background: '#f5f5f5', minHeight: '100vh' }}>
-      <Header role={role} />
+    <Container className={styles.root}>
+      <Header />
       {children}
       {/* <Footer /> */}
     </Container>
@@ -43,10 +38,10 @@ Component.defaultProps = {
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as MainLayout,
-  // Container as MainLayout,
+  // ComponentContainer as MainLayout,
   Component as MainLayoutComponent,
 }
