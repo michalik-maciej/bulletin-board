@@ -6,17 +6,22 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { connect, useSelector } from 'react-redux'
 
 import PropTypes from 'prop-types'
+import { changeUser } from '../../../redux/userRedux'
 import clsx from 'clsx'
 import styles from './Header.module.scss'
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+function Component({ children, className, toggle }) {
+  const isLoggedIn = useSelector((state) => state.user.logged)
 
-function Component({ children, className, isLoggedIn }) {
   const [userLogged, setUserLogged] = useState(isLoggedIn)
+
+  function handleLogin(bool) {
+    toggle(bool)
+  }
 
   const buttons = {
     isLogged: (
@@ -30,7 +35,7 @@ function Component({ children, className, isLoggedIn }) {
           color="success"
           /*           href="http://google.com"
           target="_blank" */
-          onClick={() => setUserLogged(false)}
+          onClick={() => handleLogin(false)}
         >
           Log out
         </Button>
@@ -43,7 +48,7 @@ function Component({ children, className, isLoggedIn }) {
         color="success"
         /*         href="http://google.com"
         target="_blank" */
-        onClick={() => setUserLogged(true)}
+        onClick={() => handleLogin(true)}
       >
         Log in
       </Button>
@@ -77,7 +82,9 @@ function Component({ children, className, isLoggedIn }) {
               Header
             </Typography>
             <Stack spacing={2} direction="row">
-              {userLogged ? buttons.isLogged : buttons.isNotLogged}
+              {buttons.isLogged}
+              {buttons.isNotLogged}
+              {/* {userLogged ? buttons.isLogged : buttons.isNotLogged} */}
             </Stack>
           </Toolbar>
         </Container>
@@ -89,27 +96,18 @@ function Component({ children, className, isLoggedIn }) {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  isLoggedIn: PropTypes.bool,
+  toggle: PropTypes.func.isRequired,
 }
 
 Component.defaultProps = {
   children: null,
   className: '',
-  isLoggedIn: false,
 }
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  toggle: (payload) => dispatch(changeUser(payload)),
+})
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const ComponentContainer = connect(null, mapDispatchToProps)(Component)
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export {
-  Component as Header,
-  // Container as Header,
-  Component as HeaderComponent,
-}
+export { ComponentContainer as Header, Component as HeaderComponent }

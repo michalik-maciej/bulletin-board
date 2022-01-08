@@ -1,18 +1,59 @@
-import { Paper } from '@mui/material'
-import { Post } from '../Post/Post'
+import {
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  Paper,
+  Typography,
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { connect, useSelector } from 'react-redux'
+
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import React from 'react'
 import clsx from 'clsx'
-import { connect } from 'react-redux'
-import { getAll } from '../../../redux/postsRedux'
+import { getUser } from '../../../redux/userRedux'
 import styles from './Homepage.module.scss'
 
-function Component({ className, children, posts }) {
+function Component({ className, children, isLoggedIn }) {
+  const posts = useSelector((state) => state.posts.data)
+  // const isLoggedIn = useSelector((state) => state.logged.asUser)
+
+  useEffect(() => {
+    console.log(isLoggedIn)
+  }, [])
+
   return (
     <Paper className={styles.root} elevation={2}>
       <h2>Homepage</h2>
+      {isLoggedIn ? (
+        <Button size="small" variant="contained" color="success">
+          My posts
+        </Button>
+      ) : null}
       {posts.map((post) => (
-        <Post key={post.id} data={post} />
+        <Card
+          key={post.id}
+          raised
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            mb: 3,
+          }}
+        >
+          <CardActionArea component={Link} to={`post/${post.id}`}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h6" p={2}>
+                {post.title}
+              </Typography>
+              {post.price ? (
+                <Typography variant="h6" p={2}>
+                  {post.price} pln
+                </Typography>
+              ) : null}
+            </Box>
+          </CardActionArea>
+        </Card>
       ))}
       {children}
     </Paper>
@@ -22,23 +63,22 @@ function Component({ className, children, posts }) {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  posts: PropTypes.arrayOf(PropTypes.object),
+  isLoggedIn: PropTypes.bool.isRequired,
 }
 
 Component.defaultProps = {
   children: null,
   className: '',
-  posts: [{}],
 }
 
 const mapStateToProps = (state) => ({
-  posts: getAll(state),
+  isLoggedIn: getUser(state),
 })
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-const Container = connect(mapStateToProps)(Component)
+const ComponentContainer = connect(mapStateToProps)(Component)
 
-export { Container as Homepage, Component as HomepageComponent }
+export { ComponentContainer as Homepage, Component as HomepageComponent }

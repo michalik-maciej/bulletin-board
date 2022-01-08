@@ -4,10 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import initialState from './initialState'
 import postsReducer from './postsRedux'
 import thunk from 'redux-thunk'
+import userReducer from './userRedux'
 
 // define reducers
 const reducers = {
   posts: postsReducer,
+  user: userReducer,
 }
 
 // add blank reducers for initial state properties without reducers

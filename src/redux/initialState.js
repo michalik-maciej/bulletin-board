@@ -19,9 +19,10 @@ const initialState = {
       phonenumber: '123-456-789',
     },
   ],
-  logged: {
-    asAdmin: false,
-    asUser: true,
+  user: {
+    logged: false,
+    id: undefined,
+    role: undefined,
   },
   posts: {
     loading: {
