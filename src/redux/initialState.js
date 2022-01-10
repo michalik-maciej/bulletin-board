@@ -1,10 +1,12 @@
 import shortid from 'shortid'
 
+const userOneId = shortid()
+
 const initialState = {
   users: [
     {
       /* required fields */
-      id: shortid(),
+      id: userOneId,
       email: 'halniak24@gmail.com',
       password: '123',
       /* optional fields */
@@ -20,9 +22,9 @@ const initialState = {
     },
   ],
   user: {
-    logged: false,
-    id: undefined,
-    role: undefined,
+    logged: true,
+    id: userOneId,
+    role: 'admin',
   },
   posts: {
     loading: {
@@ -38,10 +40,10 @@ const initialState = {
           'Praesent et neque at nibh tincidunt cursus. Morbi eros mauris, bibendum et ex non, varius interdum elit. Donec pellentesque elementum nisl, ac scelerisque nisi dignissim id. Pellentesque sit amet cursus ligula. Morbi elementum laoreet consequat. Nullam tempor pellentesque venenatis.',
         publicationDate: '01-02-2022',
         lastUpdate: '01-02-2022',
-        author: 'halniak24@gmail.com',
+        author: userOneId,
         status: 'draft', // published, closed
         /* optional fields */
-        price: 100,
+        price: '100',
       },
       {
         id: shortid(),
@@ -50,10 +52,10 @@ const initialState = {
           'Maecenas quis dui arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         publicationDate: '11-10-2021',
         lastUpdate: '31-12-2021',
-        author: 'a@b.c',
+        author: userOneId,
         status: 'published', // published, closed
         /* optional fields */
-        price: 2000,
+        price: '2000',
         location: 'Podgórze, Krakow, Poland',
       },
     ],

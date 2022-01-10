@@ -5,7 +5,6 @@ import { api } from '../settings'
 export const getAll = ({ posts }) => posts.data
 export const getPostById = ({ posts }, postId) =>
   posts.data.find((post) => post.id === postId)
-
 export const getLoadingState = ({ posts }) => posts.loading
 
 /* action name creator */
@@ -17,12 +16,14 @@ const FETCH_START = createActionName('FETCH_START')
 const FETCH_SUCCESS = createActionName('FETCH_SUCCESS')
 const FETCH_ERROR = createActionName('FETCH_ERROR')
 const CHANGE_STATUS = createActionName('CHANGE_STATUS')
+const ADD_POST = createActionName('ADD_POST')
 
 /* action creators */
 const fetchStarted = (payload) => ({ payload, type: FETCH_START })
 const fetchSuccess = (payload) => ({ payload, type: FETCH_SUCCESS })
 const fetchError = (payload) => ({ payload, type: FETCH_ERROR })
 const changeStatus = (payload) => ({ payload, type: CHANGE_STATUS })
+export const addPost = (payload) => ({ payload, type: ADD_POST })
 
 /* thunk creators */
 export const fetchFromAPI = () => (dispatch) => {
@@ -88,6 +89,11 @@ export default function reducer(statePart = [], action = {}) {
           return action.payload
         }),
       }
+    }
+    case ADD_POST: {
+      console.log(statePart)
+      console.log(action)
+      return { ...statePart, data: [...statePart.data, action.payload] }
     }
     default:
       return statePart
