@@ -1,5 +1,7 @@
 /* selectors */
 export const getUser = ({ user }) => user
+export const getUserData = ({ user, users }) =>
+  user.logged ? users.find((item) => item.id === user.id) : null
 
 /* action name creator */
 const reducerName = 'user'
