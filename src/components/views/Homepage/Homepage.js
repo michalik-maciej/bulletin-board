@@ -12,11 +12,12 @@ import { connect, useSelector } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { getAll } from '../../../redux/postsRedux'
 import { getUser } from '../../../redux/userRedux'
 import styles from './Homepage.module.scss'
 
-function Component({ className, children, isLoggedIn }) {
-  const posts = useSelector((state) => state.posts.data)
+function Component({ className, children, isLoggedIn, posts }) {
+  // const posts = useSelector((state) => state.posts.data)
 
   return (
     <>
@@ -61,14 +62,17 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
+  posts: PropTypes.arrayOf(PropTypes.shape({})),
 }
 
 Component.defaultProps = {
   children: null,
   className: '',
+  posts: [{}],
 }
 
 const mapStateToProps = (state) => ({
+  posts: getAll(state),
   isLoggedIn: getUser(state),
 })
 

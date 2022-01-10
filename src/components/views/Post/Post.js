@@ -8,6 +8,7 @@ import {
   ListItem,
   Typography,
 } from '@mui/material'
+import { connect, useSelector } from 'react-redux'
 
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -15,13 +16,9 @@ import clsx from 'clsx'
 import { constants } from '../../../settings'
 import { getPostById } from '../../../redux/postsRedux'
 import styles from './Post.module.scss'
-import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { withRouter } from '../../../utils/utils'
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
-function Component({ className, data }) {
+function Component({ className, post }) {
   // const { id } = useParams()
   // const post = useSelector((state) => getPostById(state, id))
 
@@ -35,7 +32,7 @@ function Component({ className, data }) {
     publicationDate,
     status,
     title,
-  } = data
+  } = post
 
   return (
     <Card className={clsx(className, styles.root)}>
@@ -93,8 +90,7 @@ function Component({ className, data }) {
 
 Component.propTypes = {
   className: PropTypes.string,
-  props: PropTypes.shape({}).isRequired,
-  data: PropTypes.shape({
+  post: PropTypes.shape({
     author: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
@@ -112,18 +108,10 @@ Component.defaultProps = {
   className: '',
 }
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = (state, { router }) => ({
+  post: getPostById(state, router.params.id),
+})
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const ComponentContainer = withRouter(connect(mapStateToProps)(Component))
 
-// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export {
-  Component as Post,
-  // ComponentContainer as Post,
-  Component as PostComponent,
-}
+export { ComponentContainer as Post, Component as PostComponent }

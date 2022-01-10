@@ -17,9 +17,9 @@ import styles from './Header.module.scss'
 import { useTheme } from '@mui/styles'
 
 function Component({ children, className, toggle }) {
-  const isLoggedIn = useSelector((state) => state.user.logged)
+  // const isLoggedIn = useSelector((state) => state.user.logged)
   const theme = useTheme()
-  const [userLogged, setUserLogged] = useState(isLoggedIn)
+  const [userLogged, setUserLogged] = useState(true)
 
   function handleLogin(bool) {
     toggle(bool)
