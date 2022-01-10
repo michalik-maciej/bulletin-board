@@ -4,6 +4,7 @@ import {
   Card,
   CardActionArea,
   Paper,
+  Toolbar,
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
@@ -11,26 +12,22 @@ import { connect, useSelector } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import { getUser } from '../../../redux/userRedux'
 import styles from './Homepage.module.scss'
 
 function Component({ className, children, isLoggedIn }) {
   const posts = useSelector((state) => state.posts.data)
-  // const isLoggedIn = useSelector((state) => state.logged.asUser)
-
-  useEffect(() => {
-    console.log(isLoggedIn)
-  }, [])
 
   return (
-    <Paper className={styles.root} elevation={2}>
-      <h2>Homepage</h2>
-      {isLoggedIn ? (
-        <Button size="small" variant="contained" color="success">
-          My posts
-        </Button>
-      ) : null}
+    <>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <h2>Homepage</h2>
+        {isLoggedIn ? (
+          <Button href="/post/add" size="small" variant="outlined">
+            Add new post
+          </Button>
+        ) : null}
+      </Toolbar>
       {posts.map((post) => (
         <Card
           key={post.id}
@@ -56,7 +53,7 @@ function Component({ className, children, isLoggedIn }) {
         </Card>
       ))}
       {children}
-    </Paper>
+    </>
   )
 }
 

@@ -1,42 +1,15 @@
-import PropTypes from 'prop-types'
+import { Link } from '@mui/material'
 import React from 'react'
-import clsx from 'clsx'
-import styles from './NotFound.module.scss'
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
-function Component({ className, children }) {
+function Component() {
   return (
-    <div className={clsx(className, styles.root)}>
-      <h2>NotFound</h2>
-      {children}
-    </div>
+    <>
+      <h2>Page not found</h2>
+      <Link href="/" underline="hover">
+        Back to homepage
+      </Link>
+    </>
   )
 }
 
-Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-}
-
-Component.defaultProps = {
-  children: null,
-  className: '',
-}
-
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
-
-// const ComponentContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
-
-export {
-  Component as NotFound,
-  // ComponentContainer as NotFound,
-  Component as NotFoundComponent,
-}
+export { Component as NotFound, Component as NotFoundComponent }

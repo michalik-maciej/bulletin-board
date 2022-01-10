@@ -1,4 +1,4 @@
-import { Container, Toolbar } from '@mui/material'
+import { Container, Paper, Toolbar } from '@mui/material'
 
 import { Footer } from '../Footer/Footer'
 import { Header } from '../Header/Header'
@@ -12,9 +12,11 @@ import styles from './MainLayout.module.scss'
 
 function Component({ className, children }) {
   return (
-    <Container className={styles.root}>
+    <Container className={styles.root} sx={{ display: 'flex' }}>
       <Header />
-      {children}
+      <Paper className={styles.paper} elevation={2}>
+        {children}
+      </Paper>
       {/* <Footer /> */}
     </Container>
   )

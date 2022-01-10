@@ -2,8 +2,13 @@
 
  .root {
    background: #eee;
-   min-height: calc(100vh - 2em);
-   margin: 2rem auto 0;
-   padding: 4rem;
-   display: flex;
+   min-height: 100vh;
+   padding-top: 4rem;
+   .paper {
+     display: flex;
+     flex-grow: 1;
+     flex-direction: column;
+     margin: 2rem;
+     padding: 2rem 4rem;
+   }
  }
