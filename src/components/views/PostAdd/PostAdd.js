@@ -19,7 +19,7 @@ function Component({ className, children, addNewPost, userData }) {
   const handleSubmit = (event) => {
     event.preventDefault()
     const today = formatDate.DDMMYYYY(new Date())
-
+    console.log(event.target.id)
     addNewPost({
       id: shortid(),
       title,
@@ -27,7 +27,7 @@ function Component({ className, children, addNewPost, userData }) {
       publicationDate: today,
       lastUpdate: today,
       author: userData.id,
-      status: 'draft',
+      status: event.target.id,
       price,
       location,
     })
@@ -40,7 +40,7 @@ function Component({ className, children, addNewPost, userData }) {
         component="form"
         noValidate
         className={styles.form}
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -75,8 +75,13 @@ function Component({ className, children, addNewPost, userData }) {
             />
           </Grid>
           <Grid item>
-            <Button type="submit" variant="contained">
+            <Button onClick={handleSubmit} variant="contained" id="draft">
               Save draft
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button onClick={handleSubmit} variant="contained" id="published">
+              Publish
             </Button>
           </Grid>
         </Grid>

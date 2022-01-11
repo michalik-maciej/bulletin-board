@@ -3,28 +3,33 @@ import {
   Button,
   Card,
   CardActionArea,
-  Paper,
   Toolbar,
   Typography,
 } from '@mui/material'
+import { Link, useLocation } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 
-import { Link } from 'react-router-dom'
+import { CustomAlert } from '../../common/CustomAlert/CustomAlert'
 import PropTypes from 'prop-types'
 import { getAll } from '../../../redux/postsRedux'
-import { getUser } from '../../../redux/userRedux'
-import styles from './Homepage.module.scss'
+import { isLogged } from '../../../redux/userRedux'
 
-function Component({ className, children, isLoggedIn, posts }) {
+function Component({ children, isLoggedIn, posts }) {
   // const posts = useSelector((state) => state.posts.data)
 
   return (
     <>
+      <CustomAlert />
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <h2>Homepage</h2>
         {isLoggedIn ? (
-          <Button href="/post/add" size="small" variant="outlined">
+          <Button
+            component={Link}
+            to="/post/add"
+            size="small"
+            variant="outlined"
+          >
             Add new post
           </Button>
         ) : null}
@@ -60,20 +65,18 @@ function Component({ className, children, isLoggedIn, posts }) {
 
 Component.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string,
   isLoggedIn: PropTypes.bool.isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})),
 }
 
 Component.defaultProps = {
   children: null,
-  className: '',
   posts: [{}],
 }
 
 const mapStateToProps = (state) => ({
   posts: getAll(state),
-  isLoggedIn: getUser(state),
+  isLoggedIn: isLogged(state),
 })
 
 // const mapDispatchToProps = dispatch => ({

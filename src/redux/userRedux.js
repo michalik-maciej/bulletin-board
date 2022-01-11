@@ -1,5 +1,5 @@
 /* selectors */
-export const getUser = ({ user }) => user
+export const isLogged = ({ user }) => user.logged
 export const getUserData = ({ user, users }) =>
   user.logged ? users.find((item) => item.id === user.id) : null
 
@@ -19,7 +19,7 @@ export default function reducer(statePart = [], action = {}) {
     case CHANGE: {
       return {
         ...statePart,
-        user: { ...statePart.user, logged: action.payload },
+        logged: action.payload,
       }
     }
     default:
