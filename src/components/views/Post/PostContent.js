@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Card,
   CardContent,
@@ -13,8 +14,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { constants } from '../../../settings'
 import styles from './Post.module.scss'
+import { useTheme } from '@mui/styles'
 
 function Component({ post }) {
+  const theme = useTheme()
   const {
     author,
     content,
@@ -28,62 +31,71 @@ function Component({ post }) {
   } = post
 
   return (
-    <Card className={styles.root}>
-      <Grid container spacing={2}>
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={9}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <Box
+    <Badge
+      className={styles.status}
+      badgeContent={status}
+      color="primary"
+      variant="string"
+    >
+      <Card className={styles.root}>
+        <Grid container spacing={2}>
+          <Grid
+            item
+            xs={12}
+            sm={8}
+            md={9}
             sx={{
               display: 'flex',
-              justifyContent: 'space-between',
+              flexDirection: 'column',
             }}
           >
-            <Typography variant="h5" p={2}>
-              {title}
-              <Typography variant="body2" color="text.secondary">
-                {`published ${publicationDate} ${location || ''}`}
-              </Typography>
-            </Typography>
-            {price ? (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
               <Typography variant="h5" p={2}>
-                {price} pln
-              </Typography>
-            ) : null}
-          </Box>
-          <CardContent sx={{ flexGrow: 1 }}>{content}</CardContent>
-          <List className={styles.captions}>
-            {Object.entries({
-              contact: author,
-              status,
-              updated: lastUpdate,
-            }).map(([key, value]) => (
-              <ListItem key={key}>
-                <Typography variant="caption" display="block">
-                  {key}: {value}
+                {title}
+                <Typography variant="body2" color="text.secondary">
+                  {`published ${publicationDate} ${location || ''}`}
                 </Typography>
-              </ListItem>
-            ))}
-          </List>
+              </Typography>
+              {price ? (
+                <Typography variant="h5" p={2}>
+                  {price} pln
+                </Typography>
+              ) : null}
+            </Box>
+            <CardContent sx={{ flexGrow: 1 }}>{content}</CardContent>
+            <List className={styles.captions}>
+              {Object.entries({
+                contact: `${author.email}, ${author.phone}`,
+                updated: lastUpdate,
+              }).map(([key, value]) => (
+                <ListItem key={key}>
+                  <Typography variant="caption">
+                    {key}: {value}
+                  </Typography>
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
+          <Grid item xs={12} sm={4} md={3}>
+            <CardMedia component="img" src={image} alt="Post image example" />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <CardMedia component="img" src={image} alt="Post image example" />
-        </Grid>
-      </Grid>
-    </Card>
+      </Card>
+    </Badge>
   )
 }
 
 Component.propTypes = {
   post: PropTypes.shape({
-    author: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      phone: PropTypes.string,
+    }).isRequired,
     id: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     lastUpdate: PropTypes.string.isRequired,

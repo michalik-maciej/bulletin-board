@@ -10,15 +10,13 @@ const initialState = {
       email: 'halniak24@gmail.com',
       password: '123',
       /* optional fields */
-      phonenumber: '123-456-789',
+      phone: '123-456-789',
     },
     {
       /* required fields */
       id: shortid(),
       email: 'a@b.c',
       password: '0000',
-      /* optional fields */
-      phonenumber: '123-456-789',
     },
   ],
   user: {
@@ -40,7 +38,7 @@ const initialState = {
           'Praesent et neque at nibh tincidunt cursus. Morbi eros mauris, bibendum et ex non, varius interdum elit. Donec pellentesque elementum nisl, ac scelerisque nisi dignissim id. Pellentesque sit amet cursus ligula. Morbi elementum laoreet consequat. Nullam tempor pellentesque venenatis.',
         publicationDate: '01-02-2022',
         lastUpdate: '01-02-2022',
-        author: userOneId,
+        author: { id: userOneId },
         status: 'draft', // published, closed
         /* optional fields */
         price: '100',
@@ -52,7 +50,7 @@ const initialState = {
           'Maecenas quis dui arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         publicationDate: '11-10-2021',
         lastUpdate: '31-12-2021',
-        author: userOneId,
+        author: { id: userOneId },
         status: 'published', // published, closed
         /* optional fields */
         price: '2000',
