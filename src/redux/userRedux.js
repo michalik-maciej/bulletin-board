@@ -1,7 +1,12 @@
 /* selectors */
-export const isLogged = ({ user }) => user.logged
 export const getUserId = ({ user, users }) =>
-  user.logged ? users.find((item) => item.id === user.id).id : null
+  user.logged ? users.find((item) => item.id === user.id).id : ''
+
+export const getUserRole = ({ user, users }) =>
+  user.logged ? users.find((item) => item.id === user.id).role : 'anonymous'
+
+export const getIsAdmin = ({ user, users }) =>
+  !!(getUserRole({ user, users }) === 'admin')
 
 /* action name creator */
 const reducerName = 'user'

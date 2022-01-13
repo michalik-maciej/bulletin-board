@@ -1,33 +1,37 @@
 import { Box, Button, Grid, TextField } from '@mui/material'
 import React, { useState } from 'react'
 
+import { CustomAlert } from '../../common/CustomAlert/CustomAlert'
 import PropTypes from 'prop-types'
 import { formatDate } from '../../../utils/utils'
 import styles from './PostForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 function Component({ post, sendForm }) {
-  const [title, setTitle] = useState()
-  const [content, setContent] = useState()
-  const [price, setPrice] = useState()
-  const [location, setLocation] = useState()
+  const [title, setTitle] = useState(post.title)
+  const [content, setContent] = useState(post.content)
+  const [price, setPrice] = useState(post.price)
+  const [location, setLocation] = useState(post.location)
+  const [prevAction, setPrevAction] = useState('')
+  const navigate = useNavigate()
 
   const fields = [
     {
       label: 'Post title',
-      value: post.title,
+      value: title,
       action: setTitle,
       required: true,
     },
     {
       label: 'Post content',
-      value: post.content,
+      value: content,
       action: setContent,
       required: true,
     },
-    { label: 'Price', value: post.price, action: setPrice, required: false },
+    { label: 'Price', value: price, action: setPrice, required: false },
     {
       label: 'Location',
-      value: post.location,
+      value: location,
       action: setLocation,
       required: false,
     },
@@ -48,6 +52,8 @@ function Component({ post, sendForm }) {
       lastUpdate: today,
       status: event.target.id,
     })
+    setPrevAction(event.target.id)
+    // navigate(-1)
   }
 
   const generatePostField = ({ label, action, value, required }) => (
@@ -70,6 +76,7 @@ function Component({ post, sendForm }) {
             label: field.label,
             action: field.action,
             required: field.required,
+            value: field.value,
           })
         )}
         <Grid item>
@@ -83,6 +90,7 @@ function Component({ post, sendForm }) {
           </Button>
         </Grid>
       </Grid>
+      <CustomAlert message={prevAction} />
     </Box>
   )
 }
@@ -91,19 +99,31 @@ Component.propTypes = {
   sendForm: PropTypes.func.isRequired,
   post: PropTypes.shape({
     author: PropTypes.shape({
-      email: PropTypes.string.isRequired,
+      email: PropTypes.string,
       phone: PropTypes.string,
-    }).isRequired,
-    id: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    lastUpdate: PropTypes.string.isRequired,
-    publicationDate: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
+    }),
+    id: PropTypes.string,
+    content: PropTypes.string,
+    lastUpdate: PropTypes.string,
+    publicationDate: PropTypes.string,
+    title: PropTypes.string,
+    status: PropTypes.string,
     image: PropTypes.string,
     price: PropTypes.string,
     location: PropTypes.string,
-  }).isRequired,
+  }),
+}
+
+Component.defaultProps = {
+  post: {
+    content: '',
+    lastUpdate: null,
+    publicationDate: null,
+    title: '',
+    status: null,
+    price: '',
+    location: '',
+  },
 }
 
 export { Component as PostForm, Component as PostFormComponent }

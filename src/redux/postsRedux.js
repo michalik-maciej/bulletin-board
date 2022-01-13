@@ -7,10 +7,10 @@ export const getPostById = ({ posts, users }, postId) => {
   const post = posts.data.find((innerPost) => innerPost.id === postId)
   if (post) {
     post.author = users.find((user) => user.id === post.author.id)
-    // post = JSON.parse(JSON.stringify(post))
   }
   return post
 }
+export const getShouldFilter = ({ posts }) => posts.filter
 export const getLoadingState = ({ posts }) => posts.loading
 
 /* action name creator */
@@ -25,6 +25,7 @@ const CHANGE_STATUS = createActionName('CHANGE_STATUS')
 const ADD_POST = createActionName('ADD_POST')
 const UPDATE_POST = createActionName('UPDATE_POST')
 const REMOVE_POST = createActionName('REMOVE_POST')
+const FILTER_POSTS = createActionName('FILTER_POSTS')
 
 /* action creators */
 const fetchStarted = (payload) => ({ payload, type: FETCH_START })
@@ -34,6 +35,10 @@ const changeStatus = (payload) => ({ payload, type: CHANGE_STATUS })
 export const addPost = (payload) => ({ payload, type: ADD_POST })
 export const updatePost = (payload) => ({ payload, type: UPDATE_POST })
 export const removePost = (payload) => ({ payload, type: REMOVE_POST })
+export const filterPostsByAuthor = (payload) => ({
+  payload,
+  type: FILTER_POSTS,
+})
 
 /* thunk creators */
 export const fetchFromAPI = () => (dispatch) => {
@@ -116,6 +121,12 @@ export default function reducer(statePart = [], action = {}) {
       return {
         ...statePart,
         data: [...statePart.data.filter((post) => post.id !== action.payload)],
+      }
+    }
+    case FILTER_POSTS: {
+      return {
+        ...statePart,
+        filter: action.payload,
       }
     }
     default:

@@ -5,7 +5,7 @@ import {
   DialogTitle,
   Stack,
 } from '@mui/material'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 
 import PropTypes from 'prop-types'
@@ -16,13 +16,12 @@ function Component({ post }) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { state } = useLocation()
 
   const handlePost = (event) => {
     event.preventDefault()
     setDialogOpen(false)
     dispatch(removePost(post.id))
-    navigate('/', { state: { prevAction: 'postRemove' } })
+    navigate('/', { state: { prevAction: 'Post has been removed' } })
   }
 
   return (

@@ -2,22 +2,23 @@ import { PostForm } from '../../features/PostForm/PostForm'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { addPost } from '../../../redux/postsRedux'
-import clsx from 'clsx'
 import { connect } from 'react-redux'
+import { getUserId } from '../../../redux/userRedux'
 import shortid from 'shortid'
 import styles from './PostAdd.module.scss'
 
-function Component({ className, addNewPost }) {
+function Component({ addNewPost, userId }) {
   const sendForm = (formData) => {
     addNewPost({
       ...formData,
       id: shortid(),
+      author: { id: userId },
       publicationDate: formData.lastUpdate,
     })
   }
 
   return (
-    <div className={clsx(className, styles.root)}>
+    <div className={styles.root}>
       <h2>Add post</h2>
       <PostForm sendForm={sendForm} />
     </div>
@@ -25,18 +26,21 @@ function Component({ className, addNewPost }) {
 }
 
 Component.propTypes = {
-  className: PropTypes.string,
   addNewPost: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
 }
 
-Component.defaultProps = {
-  className: '',
-}
+const mapStateToProps = (state) => ({
+  userId: getUserId(state),
+})
 
 const mapDispatchToProps = (dispatch) => ({
   addNewPost: (payload) => dispatch(addPost(payload)),
 })
 
-const ComponentContainer = connect(null, mapDispatchToProps)(Component)
+const ComponentContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component)
 
 export { ComponentContainer as PostAdd, Component as PostAddComponent }

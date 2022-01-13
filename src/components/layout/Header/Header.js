@@ -6,23 +6,28 @@ import {
   Stack,
   Toolbar,
 } from '@mui/material'
-import { changeUser, isLogged } from '../../../redux/userRedux'
+import { changeUser, getUserId } from '../../../redux/userRedux'
+import { filterPostsByAuthor, getShouldFilter } from '../../../redux/postsRedux'
 
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React from 'react'
-import clsx from 'clsx'
 import { connect } from 'react-redux'
-import styles from './Header.module.scss'
-import { useTheme } from '@mui/styles'
+import { useTheme } from '@mui/material/styles'
 
-function Component({ children, className, toggleLogin, isLoggedIn }) {
+function Component({ toggleLogin, userId, filterPosts, shouldFilter }) {
   const theme = useTheme()
 
   const handleLogin = ({ event, bool }) => {
     event.preventDefault()
+    filterPosts(false)
     toggleLogin(bool)
+  }
+
+  const handlePostFilter = ({ event }) => {
+    event.preventDefault()
+    filterPosts(!shouldFilter)
   }
 
   const headerButton = ({ action = null, caption }) => (
@@ -36,28 +41,33 @@ function Component({ children, className, toggleLogin, isLoggedIn }) {
     </Button>
   )
 
-  const buttons = {
-    isLogged: (
+  let buttons
+  if (userId) {
+    buttons = (
       <>
-        {headerButton({ caption: 'My posts' })}
+        {headerButton({
+          caption: shouldFilter ? 'All posts' : 'My posts',
+          action: (event) => handlePostFilter({ event }),
+        })}
         {headerButton({
           caption: 'Log out',
           action: (event) => handleLogin({ event, bool: false }),
         })}
       </>
-    ),
-    isNotLogged: (
+    )
+  } else {
+    buttons = (
       <>
         {headerButton({
           caption: 'Log in',
           action: (event) => handleLogin({ event, bool: true }),
         })}
       </>
-    ),
+    )
   }
 
   return (
-    <AppBar className={clsx(className, styles.root)}>
+    <AppBar>
       <Toolbar>
         <Container maxWidth="lg">
           <Toolbar
@@ -89,7 +99,7 @@ function Component({ children, className, toggleLogin, isLoggedIn }) {
               </IconButton>
             </Link>
             <Stack spacing={2} direction="row">
-              {isLoggedIn ? buttons.isLogged : buttons.isNotLogged}
+              {buttons}
             </Stack>
           </Toolbar>
         </Container>
@@ -99,23 +109,19 @@ function Component({ children, className, toggleLogin, isLoggedIn }) {
 }
 
 Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
+  filterPosts: PropTypes.func.isRequired,
   toggleLogin: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool,
-}
-
-Component.defaultProps = {
-  children: null,
-  className: '',
-  isLoggedIn: false,
+  userId: PropTypes.string.isRequired,
+  shouldFilter: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: isLogged(state),
+  shouldFilter: getShouldFilter(state),
+  userId: getUserId(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
+  filterPosts: (payload) => dispatch(filterPostsByAuthor(payload)),
   toggleLogin: (payload) => dispatch(changeUser(payload)),
 })
 
