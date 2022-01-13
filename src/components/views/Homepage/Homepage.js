@@ -1,87 +1,65 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  Toolbar,
-  Typography,
-} from '@mui/material'
-import { Link, useLocation } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
-import { connect, useSelector } from 'react-redux'
+import { Button, Toolbar } from '@mui/material'
+import { getAll, getShouldFilter } from '../../../redux/postsRedux'
 
-import { CustomAlert } from '../../common/CustomAlert/CustomAlert'
+import { Link } from 'react-router-dom'
+import { PostSummary } from '../../features/PostSummary/PostSummary'
 import PropTypes from 'prop-types'
-import { getAll } from '../../../redux/postsRedux'
-import { isLogged } from '../../../redux/userRedux'
+import React from 'react'
+import { connect } from 'react-redux'
+import { getUserId } from '../../../redux/userRedux'
 
-function Component({ children, isLoggedIn, posts }) {
-  // const posts = useSelector((state) => state.posts.data)
+function Component({ posts, userId, shouldFilter }) {
+  const content = {
+    title: 'All posts',
+    buttonPostAdd: { caption: 'Add new post', display: 'none' },
+    posts: shouldFilter
+      ? posts.filter((post) => post.author.id === userId)
+      : posts,
+  }
+
+  if (userId) {
+    if (shouldFilter) {
+      content.title = 'My posts'
+    }
+    content.buttonPostAdd.display = 'block'
+  }
 
   return (
     <>
-      <CustomAlert />
       <Toolbar sx={{ justifyContent: 'space-between' }}>
-        <h2>Homepage</h2>
-        {isLoggedIn ? (
-          <Button
-            component={Link}
-            to="/post/add"
-            size="small"
-            variant="outlined"
-          >
-            Add new post
-          </Button>
-        ) : null}
-      </Toolbar>
-      {posts.map((post) => (
-        <Card
-          key={post.id}
-          raised
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            mb: 3,
-          }}
+        <h2>{content.title}</h2>
+        <Button
+          component={Link}
+          to="/post/add"
+          size="small"
+          variant="outlined"
+          sx={{ display: content.buttonPostAdd.display }}
         >
-          <CardActionArea component={Link} to={`post/${post.id}`}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="h6" p={2}>
-                {post.title}
-              </Typography>
-              {post.price ? (
-                <Typography variant="h6" p={2}>
-                  {post.price} pln
-                </Typography>
-              ) : null}
-            </Box>
-          </CardActionArea>
-        </Card>
+          {content.buttonPostAdd.caption}
+        </Button>
+      </Toolbar>
+      {content.posts.map((post) => (
+        <PostSummary key={post.id} post={post} />
       ))}
-      {children}
     </>
   )
 }
 
 Component.propTypes = {
-  children: PropTypes.node,
-  isLoggedIn: PropTypes.bool.isRequired,
+  userId: PropTypes.string.isRequired,
   posts: PropTypes.arrayOf(PropTypes.shape({})),
+  shouldFilter: PropTypes.bool.isRequired,
 }
 
 Component.defaultProps = {
-  children: null,
   posts: [{}],
 }
 
 const mapStateToProps = (state) => ({
   posts: getAll(state),
-  isLoggedIn: isLogged(state),
+  userId: getUserId(state),
+  shouldFilter: getShouldFilter(state),
 })
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
 
 const ComponentContainer = connect(mapStateToProps)(Component)
 
