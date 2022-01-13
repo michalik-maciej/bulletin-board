@@ -1,7 +1,7 @@
 /* selectors */
 export const isLogged = ({ user }) => user.logged
-export const getUserData = ({ user, users }) =>
-  user.logged ? users.find((item) => item.id === user.id) : null
+export const getUserId = ({ user, users }) =>
+  user.logged ? users.find((item) => item.id === user.id).id : null
 
 /* action name creator */
 const reducerName = 'user'

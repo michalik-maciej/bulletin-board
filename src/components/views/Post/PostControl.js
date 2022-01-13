@@ -5,8 +5,8 @@ import {
   DialogTitle,
   Stack,
 } from '@mui/material'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
 import { removePost } from '../../../redux/postsRedux'
@@ -28,7 +28,12 @@ function Component({ post }) {
   return (
     <>
       <Stack spacing={2} direction="row">
-        <Button variant="disabled" id="close">
+        <Button
+          component={Link}
+          to={`/post/${post.id}/edit`}
+          variant="outlined"
+          id="close"
+        >
           Edit
         </Button>
         <Button
