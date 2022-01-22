@@ -1,14 +1,34 @@
 import { Button, Toolbar } from '@mui/material'
-import { getAll, getShouldFilter } from '../../../redux/postsRedux'
+import React, { useEffect, useState } from 'react'
+import {
+  fetchAllPosts,
+  getAllPublished,
+  getLoadingState,
+  getShouldFilter,
+} from '../../../redux/postsRedux'
+import { fetchUser, getUserId } from '../../../redux/userRedux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 import { PostSummary } from '../../features/PostSummary/PostSummary'
-import PropTypes from 'prop-types'
-import React from 'react'
-import { connect } from 'react-redux'
-import { getUserId } from '../../../redux/userRedux'
 
-function Component({ posts, userId, shouldFilter }) {
+function Component() {
+  const [posts, setPosts] = useState([])
+  const dispatch = useDispatch()
+  const loadingState = useSelector((state) => getLoadingState(state))
+  const publishedPosts = useSelector((state) => getAllPublished(state))
+  const userId = useSelector((state) => getUserId(state))
+  const shouldFilter = useSelector((state) => getShouldFilter(state))
+
+  useEffect(() => {
+    const { active, error } = loadingState
+    if (!active && !error) {
+      dispatch(fetchAllPosts())
+      dispatch(fetchUser())
+      setPosts(publishedPosts)
+    }
+  }, [loadingState])
+
   const content = {
     title: 'All posts',
     buttonPostAdd: { caption: 'Add new post', display: 'none' },
@@ -38,29 +58,10 @@ function Component({ posts, userId, shouldFilter }) {
           {content.buttonPostAdd.caption}
         </Button>
       </Toolbar>
-      {content.posts.map((post) => (
-        <PostSummary key={post.id} post={post} />
-      ))}
+      {posts.length &&
+        content.posts.map((post) => <PostSummary key={post._id} post={post} />)}
     </>
   )
 }
 
-Component.propTypes = {
-  userId: PropTypes.string.isRequired,
-  posts: PropTypes.arrayOf(PropTypes.shape({})),
-  shouldFilter: PropTypes.bool.isRequired,
-}
-
-Component.defaultProps = {
-  posts: [{}],
-}
-
-const mapStateToProps = (state) => ({
-  posts: getAll(state),
-  userId: getUserId(state),
-  shouldFilter: getShouldFilter(state),
-})
-
-const ComponentContainer = connect(mapStateToProps)(Component)
-
-export { ComponentContainer as Homepage, Component as HomepageComponent }
+export { Component as Homepage, Component as HomepageComponent }

@@ -6,28 +6,33 @@ import {
   Stack,
   Toolbar,
 } from '@mui/material'
-import { changeUser, getUserId } from '../../../redux/userRedux'
 import { filterPostsByAuthor, getShouldFilter } from '../../../redux/postsRedux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
+import { api } from '../../../settings'
+import { getUserId } from '../../../redux/userRedux'
 import { useTheme } from '@mui/material/styles'
 
-function Component({ toggleLogin, userId, filterPosts, shouldFilter }) {
+function Component() {
   const theme = useTheme()
-
-  const handleLogin = ({ event, bool }) => {
-    event.preventDefault()
-    filterPosts(false)
-    toggleLogin(bool)
-  }
+  const dispatch = useDispatch()
+  const filterPosts = (payload) => dispatch(filterPostsByAuthor(payload))
+  // const handleLogin = (payload) => dispatch(fetchUser(payload))
+  const userId = useSelector((state) => getUserId(state))
+  const shouldFilter = useSelector((state) => getShouldFilter(state))
 
   const handlePostFilter = ({ event }) => {
     event.preventDefault()
     filterPosts(!shouldFilter)
+  }
+
+  const handleLogin = () => {
+    // Authenticate using via passport api in the backend
+    // Open Google login page
+    window.open(`${api.url}/${api.endpoints.authGoogle}`, '_self')
   }
 
   const headerButton = ({ action = null, caption }) => (
@@ -51,7 +56,7 @@ function Component({ toggleLogin, userId, filterPosts, shouldFilter }) {
         })}
         {headerButton({
           caption: 'Log out',
-          action: (event) => handleLogin({ event, bool: false }),
+          action: () => handleLogin(),
         })}
       </>
     )
@@ -60,7 +65,7 @@ function Component({ toggleLogin, userId, filterPosts, shouldFilter }) {
       <>
         {headerButton({
           caption: 'Log in',
-          action: (event) => handleLogin({ event, bool: true }),
+          action: () => handleLogin(),
         })}
       </>
     )
@@ -78,17 +83,6 @@ function Component({ toggleLogin, userId, filterPosts, shouldFilter }) {
               borderColor: 'divider',
             }}
           >
-            {/*             <Stack spacing={2} direction="row">
-              <Button size="small" variant="contained" color="success">
-                User
-              </Button>
-              <Button size="small" variant="contained" color="success">
-                Admin
-              </Button>
-              <Button size="small" variant="contained" color="success">
-                Anonymous
-              </Button>
-            </Stack> */}
             <Link to="/">
               <IconButton
                 aria-label="back to homepage"
@@ -108,26 +102,4 @@ function Component({ toggleLogin, userId, filterPosts, shouldFilter }) {
   )
 }
 
-Component.propTypes = {
-  filterPosts: PropTypes.func.isRequired,
-  toggleLogin: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired,
-  shouldFilter: PropTypes.bool.isRequired,
-}
-
-const mapStateToProps = (state) => ({
-  shouldFilter: getShouldFilter(state),
-  userId: getUserId(state),
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  filterPosts: (payload) => dispatch(filterPostsByAuthor(payload)),
-  toggleLogin: (payload) => dispatch(changeUser(payload)),
-})
-
-const ComponentContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Component)
-
-export { ComponentContainer as Header, Component as HeaderComponent }
+export { Component as Header, Component as HeaderComponent }

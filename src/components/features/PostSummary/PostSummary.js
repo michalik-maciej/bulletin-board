@@ -7,7 +7,6 @@ import React from 'react'
 function Component({ post }) {
   return (
     <Card
-      key={post.id}
       raised
       sx={{
         display: 'flex',
@@ -15,7 +14,7 @@ function Component({ post }) {
         mb: 3,
       }}
     >
-      <CardActionArea component={Link} to={`post/${post.id}`}>
+      <CardActionArea component={Link} to={`post/${post._id}`}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography variant="h6" p={2}>
             {post.title}
@@ -33,9 +32,9 @@ function Component({ post }) {
 
 Component.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    price: PropTypes.string,
+    price: PropTypes.number,
   }).isRequired,
 }
 

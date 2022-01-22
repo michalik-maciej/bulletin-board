@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 import { removePost } from '../../../redux/postsRedux'
 import { useDispatch } from 'react-redux'
 
-function Component({ post }) {
+function Component({ postId }) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ function Component({ post }) {
   const handlePost = (event) => {
     event.preventDefault()
     setDialogOpen(false)
-    dispatch(removePost(post.id))
+    dispatch(removePost(postId))
     navigate('/', { state: { prevAction: 'Post has been removed' } })
   }
 
@@ -29,7 +29,7 @@ function Component({ post }) {
       <Stack spacing={2} direction="row">
         <Button
           component={Link}
-          to={`/post/${post.id}/edit`}
+          to={`/post/${postId}/edit`}
           variant="outlined"
           id="close"
         >
@@ -74,7 +74,7 @@ function Component({ post }) {
 }
 
 Component.propTypes = {
-  post: PropTypes.shape({ id: PropTypes.string }).isRequired,
+  postId: PropTypes.string.isRequired,
 }
 
 export { Component as PostControl }

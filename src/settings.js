@@ -1,7 +1,12 @@
 export const api = {
   url: `//${window.location.hostname}${
-    window.location.hostname === 'localhost' ? ':3000' : ''
+    window.location.hostname === 'localhost' ? ':8000' : ''
   }`,
+  endpoints: {
+    posts: `api/posts`,
+    login: `auth/login/success`,
+    authGoogle: `auth/google`,
+  },
 }
 
 export const constants = {
