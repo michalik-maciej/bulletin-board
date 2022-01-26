@@ -4,6 +4,7 @@ export const api = {
   }`,
   endpoints: {
     posts: `api/posts`,
+    users: `api/users`,
     login: `auth/login/success`,
     authGoogle: `auth/google`,
   },

@@ -5,11 +5,13 @@ import initialState from './initialState'
 import postsReducer from './postsRedux'
 import thunk from 'redux-thunk'
 import userReducer from './userRedux'
+import usersReducer from './usersRedux'
 
 // define reducers
 const reducers = {
   posts: postsReducer,
   user: userReducer,
+  users: usersReducer,
 }
 
 // add blank reducers for initial state properties without reducers

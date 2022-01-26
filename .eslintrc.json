@@ -46,6 +46,7 @@
       {"allowTemplateLiterals": true}
     ],
     "no-unused-vars": "warn",
+    "no-underscore-dangle": 0,
     "semi": 0,
     "no-console": "off",
     "react/jsx-props-no-spreading": "off",

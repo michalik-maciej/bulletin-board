@@ -3,10 +3,14 @@ import { api } from '../settings'
 
 /* selectors */
 export const getUserId = ({ user, users }) =>
-  user.logged ? users.find((item) => item.id === user.id).id : ''
+  user.logged && users.length
+    ? users.find((item) => item._id === user._id)._id
+    : ''
 
 export const getUserRole = ({ user, users }) =>
-  user.logged ? users.find((item) => item.id === user.id).role : 'anonymous'
+  user.logged && users.length
+    ? users.find((item) => item._id === user._id).role
+    : 'anonymous'
 
 export const getIsAdmin = ({ user, users }) =>
   !!(getUserRole({ user, users }) === 'admin')
@@ -22,9 +26,9 @@ const CHANGE = createActionName('CHANGE')
 export const changeUser = (payload) => ({ payload, type: CHANGE })
 
 /* thunk creators */
-export const fetchUser = () => () => {
+export const fetchUser = () => (dispatch) => {
   Axios.get(`${api.url}/${api.endpoints.login}`, {
-    credentials: 'same-origin',
+    withCredentials: true,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -32,7 +36,7 @@ export const fetchUser = () => () => {
     },
   })
     .then((res) => {
-      console.log(res)
+      dispatch(changeUser(res.data.user))
     })
     .catch((err) => {
       console.log('error fetchUser: ', err)
@@ -43,10 +47,7 @@ export const fetchUser = () => () => {
 export default function reducer(statePart = [], action = {}) {
   switch (action.type) {
     case CHANGE: {
-      return {
-        ...statePart,
-        logged: action.payload,
-      }
+      return { ...action.payload, logged: true }
     }
     default:
       return statePart

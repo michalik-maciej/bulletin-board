@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 import { PostSummary } from '../../features/PostSummary/PostSummary'
+import { fetchAllUsers } from '../../../redux/usersRedux'
 
 function Component() {
   const [posts, setPosts] = useState([])
@@ -24,6 +25,7 @@ function Component() {
     const { active, error } = loadingState
     if (!active && !error) {
       dispatch(fetchAllPosts())
+      dispatch(fetchAllUsers())
       dispatch(fetchUser())
       setPosts(publishedPosts)
     }
