@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
   Typography,
 } from '@mui/material'
 
+import { Badge } from '../../common/Badge/Badge'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { constants } from '../../../settings'
@@ -31,12 +31,7 @@ function Component({ post }) {
   } = post
 
   return (
-    <Badge
-      className={styles.status}
-      badgeContent={status}
-      color="primary"
-      variant="string"
-    >
+    <Badge status={status}>
       <Card className={styles.root}>
         <Grid container spacing={2}>
           <Grid

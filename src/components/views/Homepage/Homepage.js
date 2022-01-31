@@ -2,7 +2,7 @@ import { Button, Toolbar } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {
   fetchAllPosts,
-  getAllPublished,
+  getAll,
   getLoadingState,
   getShouldFilter,
 } from '../../../redux/postsRedux'
@@ -17,9 +17,9 @@ function Component() {
   const [posts, setPosts] = useState([])
   const dispatch = useDispatch()
   const loadingState = useSelector((state) => getLoadingState(state))
-  const publishedPosts = useSelector((state) => getAllPublished(state))
+  const allPosts = useSelector((state) => getAll(state))
   const userId = useSelector((state) => getUserId(state))
-  const shouldFilter = useSelector((state) => getShouldFilter(state))
+  const shouldFilterByUser = useSelector((state) => getShouldFilter(state))
 
   useEffect(() => {
     const { active, error } = loadingState
@@ -27,20 +27,20 @@ function Component() {
       dispatch(fetchAllPosts())
       dispatch(fetchAllUsers())
       dispatch(fetchUser())
-      setPosts(publishedPosts)
+      setPosts(allPosts)
     }
   }, [loadingState])
 
   const content = {
     title: 'All posts',
     buttonPostAdd: { caption: 'Add new post', display: 'none' },
-    posts: shouldFilter
+    posts: shouldFilterByUser
       ? posts.filter((post) => post.author._id === userId)
-      : posts,
+      : posts.filter((post) => post.status === 'published'),
   }
 
   if (userId) {
-    if (shouldFilter) {
+    if (shouldFilterByUser) {
       content.title = 'My posts'
     }
     content.buttonPostAdd.display = 'block'

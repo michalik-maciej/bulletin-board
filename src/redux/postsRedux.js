@@ -3,8 +3,6 @@ import { api } from '../settings'
 
 /* selectors */
 export const getAll = ({ posts }) => posts.data
-export const getAllPublished = ({ posts }) =>
-  posts.data.filter((item) => item.status === 'published')
 
 export const getCurrentPost = ({ posts }) => posts.currentPost
 export const getPostById = ({ posts, users }, postId) => {
