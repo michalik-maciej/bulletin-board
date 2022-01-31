@@ -26,7 +26,7 @@ function Component() {
   return (
     <>
       {post && <PostContent post={post} />}
-      {post && (isAdmin || post.author.id === userId) && (
+      {post && (isAdmin || post.author._id === userId) && (
         <PostControl postId={id} />
       )}
     </>

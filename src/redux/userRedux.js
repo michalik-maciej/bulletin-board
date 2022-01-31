@@ -36,10 +36,20 @@ export const fetchUser = () => (dispatch) => {
     },
   })
     .then((res) => {
-      dispatch(changeUser(res.data.user))
+      dispatch(changeUser({ ...res.data.user, logged: res.data.success }))
     })
     .catch((err) => {
       console.log('error fetchUser: ', err)
+    })
+}
+
+export const requestLogout = () => (dispatch) => {
+  Axios.get(`${api.url}/${api.endpoints.logout}`)
+    .then(() => {
+      dispatch(changeUser({ logged: false }))
+    })
+    .catch((err) => {
+      console.log('error requestLogout: ', err)
     })
 }
 
@@ -47,7 +57,7 @@ export const fetchUser = () => (dispatch) => {
 export default function reducer(statePart = [], action = {}) {
   switch (action.type) {
     case CHANGE: {
-      return { ...action.payload, logged: true }
+      return { ...action.payload }
     }
     default:
       return statePart

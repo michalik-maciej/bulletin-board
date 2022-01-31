@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import React, { useState } from 'react'
 
 import PropTypes from 'prop-types'
-import { removePost } from '../../../redux/postsRedux'
+import { requestRemovePost } from '../../../redux/postsRedux'
 import { useDispatch } from 'react-redux'
 
 function Component({ postId }) {
@@ -20,7 +20,7 @@ function Component({ postId }) {
   const handlePost = (event) => {
     event.preventDefault()
     setDialogOpen(false)
-    dispatch(removePost(postId))
+    dispatch(requestRemovePost(postId))
     navigate('/', { state: { prevAction: 'Post has been removed' } })
   }
 

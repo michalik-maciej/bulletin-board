@@ -1,4 +1,4 @@
-import { getPostById, updatePost } from '../../../redux/postsRedux'
+import { getCurrentPost, requestUpdatePost } from '../../../redux/postsRedux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { PostForm } from '../../features/PostForm/PostForm'
@@ -8,13 +8,9 @@ import { useParams } from 'react-router-dom'
 function Component() {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const post = useSelector((state) => getPostById(state, id))
-  const editPost = (payload) => dispatch(updatePost(payload))
+  const post = useSelector((state) => getCurrentPost(state))
   const sendForm = (formData) => {
-    editPost({
-      ...formData,
-      id,
-    })
+    dispatch(requestUpdatePost({ formData, postId: id }))
   }
 
   return (

@@ -70,7 +70,7 @@ function Component({ post }) {
             <CardContent sx={{ flexGrow: 1 }}>{content}</CardContent>
             <List className={styles.captions}>
               {Object.entries({
-                contact: `${author.email}, ${author.phone}`,
+                contact: `${author.email}`,
                 updated: lastUpdate,
               }).map(([key, value]) => (
                 <ListItem key={key}>
@@ -94,9 +94,8 @@ Component.propTypes = {
   post: PropTypes.shape({
     author: PropTypes.shape({
       email: PropTypes.string.isRequired,
-      phone: PropTypes.string,
     }).isRequired,
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     lastUpdate: PropTypes.string.isRequired,
     publicationDate: PropTypes.string.isRequired,

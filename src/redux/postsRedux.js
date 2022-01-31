@@ -8,9 +8,9 @@ export const getAllPublished = ({ posts }) =>
 
 export const getCurrentPost = ({ posts }) => posts.currentPost
 export const getPostById = ({ posts, users }, postId) => {
-  const post = posts.data.find((innerPost) => innerPost.id === postId)
+  const post = posts.data.find((innerPost) => innerPost._id === postId)
   if (post) {
-    post.author = users.find((user) => user.id === post.author.id)
+    post.author = users.find((user) => user._id === post.author._id)
   }
   return post
 }
@@ -49,8 +49,8 @@ export const filterPostsByAuthor = (payload) => ({
 })
 
 /* thunk creators */
-export const requestChangeStatus = (payload) => (dispatch) => {
-  Axios.put(`${api.url}/${api.endpoints.posts}/${payload.id}`, payload)
+export const requestChangeStatus = (payload) => async (dispatch) => {
+  await Axios.put(`${api.url}/${api.endpoints.posts}/${payload.id}`, payload)
     .then((res) => {
       dispatch(changeStatus(res.data))
     })
@@ -59,12 +59,12 @@ export const requestChangeStatus = (payload) => (dispatch) => {
     })
 }
 
-export const fetchAllPosts = () => (dispatch, getState) => {
+export const fetchAllPosts = () => async (dispatch, getState) => {
   const { posts } = getState()
 
   if (!posts.data.length) {
     dispatch(fetchStarted())
-    Axios.get(`${api.url}/${api.endpoints.posts}`)
+    await Axios.get(`${api.url}/${api.endpoints.posts}`)
       .then((res) => {
         dispatch(fetchPosts(res.data))
         dispatch(fetchSuccess(res.data))
@@ -89,6 +89,43 @@ export const fetchPostById = (postId) => (dispatch, getState) => {
         dispatch(fetchError(err.message || true))
       })
   }
+}
+
+export const requestAddPost = (payload) => async (dispatch) => {
+  dispatch(fetchStarted())
+  await Axios.post(`${api.url}/${api.endpoints.addPost}`, payload)
+    .then((res) => {
+      dispatch(addPost(res.data))
+      dispatch(fetchSuccess(res.data))
+    })
+    .catch((err) => {
+      dispatch(fetchError(err.message || true))
+    })
+}
+
+export const requestUpdatePost = (payload) => async (dispatch) => {
+  dispatch(fetchStarted())
+  const { formData, postId } = payload
+  await Axios.put(`${api.url}/${api.endpoints.editPost}/${postId}`, formData)
+    .then((res) => {
+      dispatch(updatePost(res.data))
+      dispatch(fetchSuccess(res.data))
+    })
+    .catch((err) => {
+      dispatch(fetchError(err.message || true))
+    })
+}
+
+export const requestRemovePost = (postId) => async (dispatch) => {
+  dispatch(fetchStarted())
+  await Axios.delete(`${api.url}/${api.endpoints.posts}/${postId}`)
+    .then((res) => {
+      dispatch(removePost(postId))
+      dispatch(fetchSuccess(res.data))
+    })
+    .catch((err) => {
+      dispatch(fetchError(err.message || true))
+    })
 }
 
 /* reducer */
@@ -143,7 +180,7 @@ export default function reducer(statePart = [], action = {}) {
     }
     case UPDATE_POST: {
       const index = statePart.data.findIndex(
-        (item) => item.id === action.payload.id
+        (item) => item._id === action.payload._id
       )
       const newData = [...statePart.data]
       newData[index] = action.payload
@@ -153,7 +190,7 @@ export default function reducer(statePart = [], action = {}) {
     case REMOVE_POST: {
       return {
         ...statePart,
-        data: [...statePart.data.filter((post) => post.id !== action.payload)],
+        data: [...statePart.data.filter((post) => post._id !== action.payload)],
       }
     }
     case FILTER_POSTS: {

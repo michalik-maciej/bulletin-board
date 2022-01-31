@@ -4,8 +4,11 @@ export const api = {
   }`,
   endpoints: {
     posts: `api/posts`,
+    addPost: `api/posts/add`,
+    editPost: `api/posts/edit`,
     users: `api/users`,
     login: `auth/login/success`,
+    logout: `auth/logout`,
     authGoogle: `auth/google`,
   },
 }

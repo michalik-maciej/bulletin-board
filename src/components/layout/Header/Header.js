@@ -7,32 +7,35 @@ import {
   Toolbar,
 } from '@mui/material'
 import { filterPostsByAuthor, getShouldFilter } from '../../../redux/postsRedux'
+import { getUserId, requestLogout } from '../../../redux/userRedux'
 import { useDispatch, useSelector } from 'react-redux'
 
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import { Link } from 'react-router-dom'
 import React from 'react'
 import { api } from '../../../settings'
-import { getUserId } from '../../../redux/userRedux'
 import { useTheme } from '@mui/material/styles'
 
 function Component() {
   const theme = useTheme()
   const dispatch = useDispatch()
-  const filterPosts = (payload) => dispatch(filterPostsByAuthor(payload))
-  // const handleLogin = (payload) => dispatch(fetchUser(payload))
+  const filterMyPosts = (payload) => dispatch(filterPostsByAuthor(payload))
   const userId = useSelector((state) => getUserId(state))
   const shouldFilter = useSelector((state) => getShouldFilter(state))
 
-  const handlePostFilter = ({ event }) => {
+  const handleMyPostsFilter = ({ event }) => {
     event.preventDefault()
-    filterPosts(!shouldFilter)
+    filterMyPosts(!shouldFilter)
   }
 
   const handleLogin = () => {
     // Authenticate using via passport api in the backend
     // Open Google login page
-    window.open(`${api.url}/${api.endpoints.authGoogle}`, '_self')
+    if (userId) {
+      dispatch(requestLogout())
+    } else {
+      window.open(`${api.url}/${api.endpoints.authGoogle}`, '_self')
+    }
   }
 
   const headerButton = ({ action = null, caption }) => (
@@ -52,7 +55,7 @@ function Component() {
       <>
         {headerButton({
           caption: shouldFilter ? 'All posts' : 'My posts',
-          action: (event) => handlePostFilter({ event }),
+          action: (event) => handleMyPostsFilter({ event }),
         })}
         {headerButton({
           caption: 'Log out',

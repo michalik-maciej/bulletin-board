@@ -5,7 +5,6 @@ import { CustomAlert } from '../../common/CustomAlert/CustomAlert'
 import PropTypes from 'prop-types'
 import { formatDate } from '../../../utils/utils'
 import styles from './PostForm.module.scss'
-import { useNavigate } from 'react-router-dom'
 
 function Component({ post, sendForm }) {
   const [title, setTitle] = useState(post.title)
@@ -13,7 +12,6 @@ function Component({ post, sendForm }) {
   const [price, setPrice] = useState(post.price)
   const [location, setLocation] = useState(post.location)
   const [prevAction, setPrevAction] = useState('')
-  const navigate = useNavigate()
 
   const fields = [
     {
@@ -39,10 +37,9 @@ function Component({ post, sendForm }) {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const { author, id, publicationDate } = post
+    const { author, publicationDate } = post
     const today = formatDate.DDMMYYYY(new Date())
     sendForm({
-      id,
       publicationDate,
       title,
       content,
@@ -102,7 +99,6 @@ Component.propTypes = {
       email: PropTypes.string,
       phone: PropTypes.string,
     }),
-    id: PropTypes.string,
     content: PropTypes.string,
     lastUpdate: PropTypes.string,
     publicationDate: PropTypes.string,

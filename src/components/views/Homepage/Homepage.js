@@ -35,7 +35,7 @@ function Component() {
     title: 'All posts',
     buttonPostAdd: { caption: 'Add new post', display: 'none' },
     posts: shouldFilter
-      ? posts.filter((post) => post.author.id === userId)
+      ? posts.filter((post) => post.author._id === userId)
       : posts,
   }
 

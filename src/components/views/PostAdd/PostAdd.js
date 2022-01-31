@@ -1,18 +1,20 @@
+import { useDispatch, useSelector } from 'react-redux'
+
 import { PostForm } from '../../features/PostForm/PostForm'
-import PropTypes from 'prop-types'
 import React from 'react'
-import { addPost } from '../../../redux/postsRedux'
-import { connect } from 'react-redux'
 import { getUserId } from '../../../redux/userRedux'
-import shortid from 'shortid'
+import { requestAddPost } from '../../../redux/postsRedux'
 import styles from './PostAdd.module.scss'
 
-function Component({ addNewPost, userId }) {
+function Component() {
+  const userId = useSelector((state) => getUserId(state))
+  const dispatch = useDispatch()
+  const addNewPost = (payload) => dispatch(requestAddPost(payload))
+
   const sendForm = (formData) => {
     addNewPost({
       ...formData,
-      id: shortid(),
-      author: { id: userId },
+      author: { _id: userId },
       publicationDate: formData.lastUpdate,
     })
   }
@@ -25,22 +27,4 @@ function Component({ addNewPost, userId }) {
   )
 }
 
-Component.propTypes = {
-  addNewPost: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired,
-}
-
-const mapStateToProps = (state) => ({
-  userId: getUserId(state),
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  addNewPost: (payload) => dispatch(addPost(payload)),
-})
-
-const ComponentContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Component)
-
-export { ComponentContainer as PostAdd, Component as PostAddComponent }
+export { Component as PostAdd, Component as PostAddComponent }
